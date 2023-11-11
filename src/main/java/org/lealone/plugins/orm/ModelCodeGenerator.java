@@ -11,7 +11,6 @@ import java.util.TreeSet;
 import org.lealone.common.exceptions.DbException;
 import org.lealone.common.util.CamelCaseHelper;
 import org.lealone.db.Database;
-import org.lealone.db.PluginBase;
 import org.lealone.db.constraint.ConstraintReferential;
 import org.lealone.db.index.IndexColumn;
 import org.lealone.db.schema.Schema;
@@ -21,16 +20,16 @@ import org.lealone.db.table.Column.ListColumn;
 import org.lealone.db.table.Column.MapColumn;
 import org.lealone.db.table.Column.SetColumn;
 import org.lealone.db.table.Table;
-import org.lealone.db.table.TableCodeGenerator;
+import org.lealone.db.table.TableCodeGeneratorBase;
 import org.lealone.db.table.TableSetting;
 import org.lealone.db.value.DataType;
 import org.lealone.db.value.Value;
 import org.lealone.sql.ddl.CreateService;
 
-public class ModelCodeGenerator extends PluginBase implements TableCodeGenerator {
+public class ModelCodeGenerator extends TableCodeGeneratorBase {
 
     public ModelCodeGenerator() {
-        super("model_code_generator");
+        super("default_table_code_generator");
     }
 
     @Override
