@@ -5,10 +5,10 @@
  */
 package org.lealone.plugins.orm;
 
+import org.lealone.db.ConnectionInfo;
 import org.lealone.db.Constants;
 import org.lealone.db.Database;
 import org.lealone.db.session.ServerSession;
-import org.lealone.db.session.ServerSessionFactory;
 import org.lealone.db.table.Table;
 
 public class ModelTable {
@@ -67,7 +67,7 @@ public class ModelTable {
     private void bindTable() {
         // 沒有初始化，或已经无效了，比如drop table后还被引用
         if (table == null || table.isInvalid()) {
-            session = (ServerSession) ServerSessionFactory.getInstance().createSession(getUrl()).get();
+            session = (ServerSession) new ConnectionInfo(getUrl()).createSession();
             Database db = session.getDatabase();
             table = db.getSchema(session, schemaName).getTableOrView(session, tableName);
         }
