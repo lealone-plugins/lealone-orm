@@ -36,6 +36,11 @@ import com.lealone.db.value.Value;
 import com.lealone.db.value.ValueInt;
 import com.lealone.db.value.ValueLong;
 import com.lealone.db.value.ValueNull;
+import com.lealone.plugins.orm.format.JsonFormat;
+import com.lealone.plugins.orm.format.NameCaseFormat;
+import com.lealone.plugins.orm.json.JsonObject;
+import com.lealone.plugins.orm.property.PBase;
+import com.lealone.plugins.orm.property.PLong;
 import com.lealone.sql.dml.Delete;
 import com.lealone.sql.dml.Insert;
 import com.lealone.sql.dml.Update;
@@ -48,12 +53,6 @@ import com.lealone.sql.expression.aggregate.Aggregate;
 import com.lealone.sql.optimizer.TableFilter;
 import com.lealone.sql.query.Select;
 import com.lealone.transaction.Transaction;
-
-import com.lealone.plugins.orm.format.JsonFormat;
-import com.lealone.plugins.orm.format.NameCaseFormat;
-import com.lealone.plugins.orm.json.JsonObject;
-import com.lealone.plugins.orm.property.PBase;
-import com.lealone.plugins.orm.property.PLong;
 
 /**
  * 所有关系表会生成一个 Model 子类，这个类提供 crud 和 join 操作
@@ -852,7 +851,7 @@ public abstract class Model<T extends Model<T>> {
         insert.setTable(dbTable);
         insert.prepare();
         logger.info("execute sql: " + insert.getPlanSQL());
-        insert.executeUpdate();
+        insert.executeUpdate().get();
         long rowId = session.getLastIdentity().getLong(); // session.getLastRowKey()在事务提交时被设为null了
         _rowid_.set(rowId);
 
@@ -1119,7 +1118,8 @@ public abstract class Model<T extends Model<T>> {
     public long beginTransaction() {
         // checkDao("beginTransaction");
         Table dbTable = modelTable.getTable();
-        ServerSession session = dbTable.getDatabase().createSession(modelTable.getSession().getUser());
+        ServerSession session = dbTable.getDatabase().createSession(modelTable.getSession().getUser(),
+                modelTable.getSession().getScheduler());
         Transaction t = session.getTransaction();
         session.setAutoCommit(false);
         long tid = t.getTransactionId();

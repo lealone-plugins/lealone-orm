@@ -1,7 +1,5 @@
 package com.lealone.plugins.orm.test.generated;
 
-import java.util.List;
-
 import com.lealone.plugins.orm.Model;
 import com.lealone.plugins.orm.ModelProperty;
 import com.lealone.plugins.orm.ModelTable;
@@ -10,6 +8,7 @@ import com.lealone.plugins.orm.property.PDate;
 import com.lealone.plugins.orm.property.PDouble;
 import com.lealone.plugins.orm.property.PInteger;
 import com.lealone.plugins.orm.property.PLong;
+import java.util.List;
 
 /**
  * Model for table 'ORDER'.
