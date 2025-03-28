@@ -24,6 +24,14 @@ public class OrmNullTest extends OrmTestBase {
         assertNotNull(c);
 
         c.notes.set(null).update();
+        c = Customer.dao.where().notes.isNull().findOne();
+        assertNotNull(c);
+
+        c.notes.set("abc").update();
+        c = Customer.dao.where().notes.isNotNull().findOne();
+        assertNotNull(c);
+
+        Customer.dao.notes.set(null).update();
         c = Customer.dao.where().notes.isNotNull().findOne();
         assertNull(c);
     }

@@ -34,7 +34,10 @@ public abstract class PBase<M extends Model<M>, T> extends ModelProperty<M> {
         if (m != model) {
             return p(m).set(value);
         }
-        if (!areEqual(this.value, value)) {
+        // 批量设置NULL
+        if (m.isDao() && value == null) {
+            expr().set(name, ValueNull.INSTANCE);
+        } else if (!areEqual(this.value, value)) {
             this.value = value;
             expr().set(name, value == null ? ValueNull.INSTANCE : createValue(value));
         }
