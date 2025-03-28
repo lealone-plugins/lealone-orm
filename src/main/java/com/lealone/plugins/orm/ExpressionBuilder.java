@@ -12,7 +12,6 @@ import com.lealone.db.value.DataType;
 import com.lealone.db.value.Value;
 import com.lealone.db.value.ValueBoolean;
 import com.lealone.db.value.ValueInt;
-import com.lealone.db.value.ValueNull;
 import com.lealone.db.value.ValueString;
 import com.lealone.sql.expression.Expression;
 import com.lealone.sql.expression.ExpressionColumn;
@@ -88,7 +87,7 @@ public class ExpressionBuilder<M extends Model<M>> {
 
     private Comparison createComparison(String propertyName, Object value, int compareType) {
         ExpressionColumn ec = model.getExpressionColumn(propertyName);
-        ValueExpression v = createValueExpression(value);
+        ValueExpression v = value == null ? null : createValueExpression(value);
         return new Comparison(getModelTable().getSession(), compareType, ec, v);
     }
 
@@ -172,12 +171,12 @@ public class ExpressionBuilder<M extends Model<M>> {
     }
 
     public M isNull(String propertyName) {
-        setRootExpression(propertyName, ValueNull.INSTANCE, Comparison.IS_NULL);
+        setRootExpression(propertyName, null, Comparison.IS_NULL);
         return model;
     }
 
     public M isNotNull(String propertyName) {
-        setRootExpression(propertyName, ValueNull.INSTANCE, Comparison.IS_NOT_NULL);
+        setRootExpression(propertyName, null, Comparison.IS_NOT_NULL);
         return model;
     }
 

@@ -8,7 +8,7 @@ package com.lealone.plugins.orm.property;
 import java.util.Map;
 
 import com.lealone.db.value.Value;
-
+import com.lealone.db.value.ValueNull;
 import com.lealone.plugins.orm.Model;
 import com.lealone.plugins.orm.ModelProperty;
 import com.lealone.plugins.orm.format.JsonFormat;
@@ -36,7 +36,7 @@ public abstract class PBase<M extends Model<M>, T> extends ModelProperty<M> {
         }
         if (!areEqual(this.value, value)) {
             this.value = value;
-            expr().set(name, createValue(value));
+            expr().set(name, value == null ? ValueNull.INSTANCE : createValue(value));
         }
         return model;
     }
